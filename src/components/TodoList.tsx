@@ -57,6 +57,11 @@ export default function TodoList() {
   };
 
   const handleDelete = async (id: string) => {
+    const confirmDelete = window.confirm(
+      `Are you sure you want to delete the item?`
+    );
+    if (!confirmDelete) return;
+
     try {
       const token = await getAccessTokenSilently();
       const headers = { Authorization: `Bearer ${token}` };

@@ -13,6 +13,8 @@ export const Card = styled.div`
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 1.5rem;
   margin: 1rem 0;
+  overflow: hidden;
+  word-wrap: break-word;
 
   @media (max-width: 768px) {
     padding: 1rem;
@@ -90,9 +92,12 @@ export const TodoItem = styled.li`
   margin: 0.5rem 0;
   background: #ffffff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  word-wrap: break-word;
 
   @media (max-width: 768px) {
     flex-direction: column;
+    align-items: flex-start;
     padding: 1rem;
   }
 `;
@@ -104,9 +109,15 @@ export const TodoText = styled.span<{ $status?: boolean }>`
   cursor: pointer;
   text-decoration: ${(props) => (props.$status ? "line-through" : "none")};
   color: ${(props) => (props.$status ? "red" : "black")};
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: break-word;
 
   @media (max-width: 768px) {
+    margin-right: 0;
+    margin-bottom: 0.5rem;
     font-size: 0.9rem;
+    text-align: left;
   }
 `;
 

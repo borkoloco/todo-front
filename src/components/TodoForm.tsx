@@ -14,7 +14,11 @@ export default function TodoForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (title.trim() === "") return;
+
+    if (title.trim() === "") {
+      alert("The to-do cannot be empty.");
+      return;
+    }
 
     dispatch(setLoading(true));
     try {
