@@ -11,12 +11,18 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store/store";
 import { updateTodo, deleteTodo } from "../store/todosSlice";
-import { updateTodoApi, deleteTodoApi } from "../api/todoApi";
+import {
+  updateTodoApi,
+  deleteTodoApi,
+  updateTodoStatusApi,
+} from "../api/todoApi";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useState } from "react";
+import { toggleStatus } from "../store/todosSlice";
 
 export default function TodoList() {
   const todos = useSelector((state: RootState) => state.todos.todos);
+  const loading = useSelector((state: RootState) => state.todos.loading);
   const dispatch = useDispatch();
   const { getAccessTokenSilently } = useAuth0();
 
@@ -32,6 +38,21 @@ export default function TodoList() {
       setEditingId(null);
     } catch (error) {
       console.error("Error updating todo:", error);
+    }
+  };
+
+  const handleStatusToggle = async (id: string) => {
+    dispatch(toggleStatus(id));
+
+    try {
+      const token = await getAccessTokenSilently();
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+      const updatedTodo = await updateTodoStatusApi(id, headers);
+      dispatch(updateTodo(updatedTodo));
+    } catch (error) {
+      console.error("Error updating todo status:", error);
     }
   };
 
@@ -51,6 +72,9 @@ export default function TodoList() {
     setUpdatedTitle(currentTitle);
   };
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
   return (
     <Card>
       {todos.length === 0 ? (
@@ -75,7 +99,13 @@ export default function TodoList() {
                 </>
               ) : (
                 <>
-                  <TodoText>{todo.title}</TodoText>
+                  <TodoText
+                    onClick={() => handleStatusToggle(todo._id)}
+                    $status={todo.status}
+                  >
+                    {todo.title}
+                  </TodoText>
+
                   <Button
                     color="#007bff"
                     onClick={() => startEditing(todo._id, todo.title)}

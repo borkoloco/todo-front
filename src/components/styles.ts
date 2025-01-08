@@ -13,6 +13,11 @@ export const Card = styled.div`
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 1.5rem;
   margin: 1rem 0;
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+    margin: 1rem;
+  }
 `;
 
 export const NavbarContainer = styled.nav`
@@ -23,10 +28,19 @@ export const NavbarContainer = styled.nav`
   justify-content: space-between;
   align-items: center;
   border-radius: 10px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    padding: 1rem;
+  }
 `;
 
 export const Title = styled.h1`
   font-size: 1.8rem;
+
+  @media (max-width: 768px) {
+    font-size: 1.5rem;
+  }
 `;
 
 export const Button = styled.button`
@@ -37,6 +51,12 @@ export const Button = styled.button`
   border-radius: 5px;
   cursor: pointer;
   color: white;
+
+  @media (max-width: 768px) {
+    padding: 0.5rem;
+    font-size: 0.9rem;
+  }
+
   &:hover {
     opacity: 0.9;
   }
@@ -46,6 +66,10 @@ export const Form = styled.form`
   display: flex;
   justify-content: space-between;
   gap: 1rem;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 export const Input = styled.input`
@@ -66,12 +90,24 @@ export const TodoItem = styled.li`
   margin: 0.5rem 0;
   background: #ffffff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    padding: 1rem;
+  }
 `;
 
-export const TodoText = styled.span`
+export const TodoText = styled.span<{ $status?: boolean }>`
   flex: 1;
   margin-right: 1rem;
   font-size: 1rem;
+  cursor: pointer;
+  text-decoration: ${(props) => (props.$status ? "line-through" : "none")};
+  color: ${(props) => (props.$status ? "red" : "black")};
+
+  @media (max-width: 768px) {
+    font-size: 0.9rem;
+  }
 `;
 
 export const TodoInput = styled.input`

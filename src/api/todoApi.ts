@@ -66,6 +66,23 @@ export const updateTodoApi = async (
   return response.json();
 };
 
+export const updateTodoStatusApi = async (
+  id: string,
+  headers: Record<string, string>
+): Promise<ITodo> => {
+  const response = await fetch(`${BASE_URL}/${id}/status`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      ...headers,
+    },
+  });
+  if (!response.ok) {
+    throw new Error("Failed to update todo status");
+  }
+  return response.json();
+};
+
 export const deleteTodoApi = async (
   id: string,
   headers: Record<string, string>

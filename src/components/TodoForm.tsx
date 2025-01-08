@@ -3,7 +3,7 @@
 import { Form, Input, Button, Card } from "./styles";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { addTodo } from "../store/todosSlice";
+import { setLoading, addTodo } from "../store/todosSlice";
 import { createTodo } from "../api/todoApi";
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -16,6 +16,7 @@ export default function TodoForm() {
     e.preventDefault();
     if (title.trim() === "") return;
 
+    dispatch(setLoading(true));
     try {
       const token = await getAccessTokenSilently();
       const headers = { Authorization: `Bearer ${token}` };
@@ -24,6 +25,8 @@ export default function TodoForm() {
       setTitle("");
     } catch (error) {
       console.error("Error creating todo:", error);
+    } finally {
+      dispatch(setLoading(false));
     }
   };
 

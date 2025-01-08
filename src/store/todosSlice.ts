@@ -8,16 +8,21 @@ interface ITodo {
 
 interface TodosState {
   todos: ITodo[];
+  loading: boolean;
 }
 
 const initialState: TodosState = {
   todos: [],
+  loading: false,
 };
 
 const todosSlice = createSlice({
   name: "todos",
   initialState,
   reducers: {
+    setLoading: (state, action: PayloadAction<boolean>) => {
+      state.loading = action.payload;
+    },
     addTodo: (state, action: PayloadAction<ITodo>) => {
       state.todos.push(action.payload);
     },
@@ -29,12 +34,21 @@ const todosSlice = createSlice({
         state.todos[index] = action.payload;
       }
     },
+    toggleStatus: (state, action: PayloadAction<string>) => {
+      const index = state.todos.findIndex(
+        (todo) => todo._id === action.payload
+      );
+      if (index !== -1) {
+        state.todos[index].status = !state.todos[index].status;
+      }
+    },
     deleteTodo: (state, action: PayloadAction<string>) => {
       state.todos = state.todos.filter((todo) => todo._id !== action.payload);
     },
   },
 });
 
-export const { addTodo, updateTodo, deleteTodo } = todosSlice.actions;
+export const { setLoading, addTodo, updateTodo, toggleStatus, deleteTodo } =
+  todosSlice.actions;
 
 export default todosSlice.reducer;
